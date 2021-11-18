@@ -1,5 +1,6 @@
 package com.example.backend.entities
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 @Entity
@@ -8,7 +9,9 @@ data class User (
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id:Int = 0,
     val userName:String,
+    @Column(unique=true)
     val email:String,
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     val password:String,
     @ManyToMany
     @JoinTable(
@@ -27,5 +30,5 @@ data class User (
     )
     val followedUsers:List<User>?,
     @ManyToMany(mappedBy = "followedUsers")
-    val followers:List<User>,
+    val followers:List<User>?,
 )
