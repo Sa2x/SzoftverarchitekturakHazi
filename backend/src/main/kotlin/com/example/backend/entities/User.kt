@@ -19,16 +19,16 @@ data class User (
         joinColumns = [ JoinColumn(name = "user_id") ],
         inverseJoinColumns = [ JoinColumn(name = "recipe_id") ]
     )
-    val likedRecipes:List<Recipe>?,
+    val likedRecipes:List<Recipe>? = emptyList(),
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val uploadedRecipes:List<Recipe>?,
+    val uploadedRecipes:List<Recipe>?= emptyList(),
     @ManyToMany
     @JoinTable(
         name = "user_follows",
         joinColumns = [ JoinColumn(name = "follower") ],
         inverseJoinColumns = [ JoinColumn(name = "followed") ]
     )
-    val followedUsers:List<User>?,
+    val followedUsers:List<User>?= emptyList(),
     @ManyToMany(mappedBy = "followedUsers")
-    val followers:List<User>?,
+    val followers:List<User>?= emptyList(),
 )
