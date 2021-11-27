@@ -12,7 +12,7 @@ data class User (
     @Column(unique=true)
     val email:String,
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    val password:String,
+    val password:String?="",
     @ManyToMany
     @JoinTable(
         name = "user_likes",
