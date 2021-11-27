@@ -15,6 +15,9 @@ import java.util.*
 @RequestMapping("/api/recipe")
 class RecipeController(private val recipeRepository: RecipeRepository, private val userRepository: UserRepository) {
 
+    @GetMapping
+    fun getAllRecipe():ResponseEntity<Any> = ResponseEntity.ok(recipeRepository.findAll())
+
     @PostMapping
     fun uploadRecipe(@Auth user:User, @RequestBody recipe: CreateRecipeDTO): ResponseEntity<Any> {
         val user: Optional<User> = userRepository.findById(user.id);
