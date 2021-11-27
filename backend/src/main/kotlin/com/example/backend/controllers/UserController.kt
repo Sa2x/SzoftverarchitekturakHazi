@@ -1,10 +1,7 @@
 package com.example.backend.controllers
 
 import com.example.backend.auth.Auth
-import com.example.backend.dto.GetRecipeDTO
-import com.example.backend.dto.GetUserForGetRecipeDTO
-import com.example.backend.dto.LoginUserDto
-import com.example.backend.dto.RegisterUserDTO
+import com.example.backend.dto.*
 import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.repositories.UserRepository
@@ -38,7 +35,6 @@ class UserController(private val userRepository: UserRepository) {
         return if (userRepository.existsUserByEmail(user.email)) {
             val foundUser = userRepository.findByEmail(user.email)
             if (foundUser.password == user.password) {
-                val issuer = foundUser.id.toString();
                 val claims: Map<String, Any> = hashMapOf(
                     "user_id" to foundUser.id,
                     "user_name" to foundUser.userName,
@@ -50,9 +46,9 @@ class UserController(private val userRepository: UserRepository) {
                     .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000))
                     .signWith(SignatureAlgorithm.HS512, "secret")
                     .compact()
-                ResponseEntity.ok(jwt)
+                ResponseEntity.ok(TokenDTO(jwt))
             } else {
-                ResponseEntity("Wrong password", HttpStatus.BAD_REQUEST);
+                ResponseEntity("Wrong password", HttpStatus.BAD_REQUEST)
             }
         } else {
             ResponseEntity("User doesnt exist with the given email", HttpStatus.BAD_REQUEST)
@@ -61,20 +57,20 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me")
     fun user(@Auth user:User):ResponseEntity<Any>{
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(user)
     }
 
     @GetMapping("/{id}/uploaded")
     fun getUploadedRecipes(@PathVariable id: Int): ResponseEntity<Any> {
         if (userRepository.existsById(id)) {
-            val user: User = userRepository.findById(id).orElse(null);
+            val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.uploadedRecipes?.map { recipe ->
                 GetRecipeDTO(
                     recipe.id, recipe.name,
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
                 )
-            });
+            })
         }
-        return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND);
+        return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)
     }
 }
