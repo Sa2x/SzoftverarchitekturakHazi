@@ -11,5 +11,7 @@ data class Recipe(
     val name:String,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id",nullable = false)
-    val user:User
+    val user:User,
+    @ManyToMany(mappedBy = "likedRecipes")
+    val likes:Set<User>?= emptySet()
 )

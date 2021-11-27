@@ -19,7 +19,7 @@ data class User (
         joinColumns = [ JoinColumn(name = "user_id") ],
         inverseJoinColumns = [ JoinColumn(name = "recipe_id") ]
     )
-    val likedRecipes:List<Recipe>? = emptyList(),
+    val likedRecipes:Set<Recipe>? = emptySet(),
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val uploadedRecipes:List<Recipe>?= emptyList(),
     @ManyToMany
