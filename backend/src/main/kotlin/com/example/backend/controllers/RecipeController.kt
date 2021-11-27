@@ -6,8 +6,11 @@ import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.repositories.RecipeRepository
 import com.example.backend.repositories.UserRepository
+import org.hibernate.Criteria
+import org.hibernate.Hibernate
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -60,19 +63,35 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
         return ResponseEntity("The recipe doesn't exist with the given id", HttpStatus.NOT_FOUND)
     }
 
+    @Transactional
     @PostMapping("/{id}/like")
     fun likeRecipe(@Auth user: User, @PathVariable id: Int): ResponseEntity<Any> {
         val foundUser: User? = userRepository.findById(user.id).orElse(null)
         val likedRecipes = foundUser!!.likedRecipes as MutableSet<Recipe>
-        if (recipeRepository.existsById(id)) {
+        return if (recipeRepository.existsById(id)) {
             likedRecipes.add(recipeRepository.findById(id).get())
-            return ResponseEntity.ok().build()
+            ResponseEntity.ok().build()
         } else {
-            return ResponseEntity("Recipe with the given id doesnt exist", HttpStatus.NOT_FOUND)
+            ResponseEntity("Recipe with the given id doesnt exist", HttpStatus.NOT_FOUND)
         }
-
     }
 
+    @Transactional
+    @PostMapping("/{id}/unlike")
+    fun unlikeRecipe(@Auth user: User, @PathVariable id: Int): ResponseEntity<Any> {
+        val foundUser: User? = userRepository.findById(user.id).orElse(null)
+        val likedRecipes = foundUser!!.likedRecipes as MutableSet<Recipe>
+        return if (recipeRepository.existsById(id)) {
+            //val recipeId: Int = recipeRepository.findById(id).get().id
+            likedRecipes.remove(recipeRepository.findById(id).get())
+            //likedRecipes.filter { recipe -> recipe.id != recipeId }
+            ResponseEntity.ok().build()
+        } else {
+            ResponseEntity("Recipe with the given id doesnt exist", HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @Transactional
     @GetMapping("/{id}/likes")
     fun getLikesOfRecipe(@Auth user: User, @PathVariable id: Int): ResponseEntity<Any> {
         if (recipeRepository.existsById(id)) {

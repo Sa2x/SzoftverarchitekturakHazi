@@ -10,6 +10,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.servlet.http.Cookie
@@ -65,6 +66,21 @@ class UserController(private val userRepository: UserRepository) {
         if (userRepository.existsById(id)) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.uploadedRecipes?.map { recipe ->
+                GetRecipeDTO(
+                    recipe.id, recipe.name,
+                    GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
+                )
+            })
+        }
+        return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)
+    }
+
+    @Transactional
+    @GetMapping("/{id}/liked")
+    fun getLikedRecipes(@PathVariable id:Int): ResponseEntity<Any>{
+        if (userRepository.existsById(id)) {
+            val user: User = userRepository.findById(id).orElse(null)
+            return ResponseEntity.ok(user.likedRecipes?.map { recipe ->
                 GetRecipeDTO(
                     recipe.id, recipe.name,
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
