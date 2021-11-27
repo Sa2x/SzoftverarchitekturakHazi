@@ -57,7 +57,7 @@ class UserController(private val userRepository: UserRepository) {
     }
 
     @GetMapping("/me")
-    fun user(@Auth user:User):ResponseEntity<Any>{
+    fun user(@Auth user: User): ResponseEntity<Any> {
         return ResponseEntity.ok(user)
     }
 
@@ -77,7 +77,7 @@ class UserController(private val userRepository: UserRepository) {
 
     @Transactional
     @GetMapping("/{id}/liked")
-    fun getLikedRecipes(@PathVariable id:Int): ResponseEntity<Any>{
+    fun getLikedRecipes(@PathVariable id: Int): ResponseEntity<Any> {
         if (userRepository.existsById(id)) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.likedRecipes?.map { recipe ->
@@ -85,6 +85,54 @@ class UserController(private val userRepository: UserRepository) {
                     recipe.id, recipe.name,
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
                 )
+            })
+        }
+        return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)
+    }
+
+    @Transactional
+    @PostMapping("/{id}/follow")
+    fun followUser(@Auth user: User, @PathVariable id: Int): ResponseEntity<Any> {
+        if (userRepository.existsById(id)) {
+            val toFollowUser: User = userRepository.findById(id).orElse(null)
+            val wantToFollowUser: User = userRepository.findById(user.id).orElse(null)
+            (wantToFollowUser.followedUsers as MutableSet<User>).add(toFollowUser)
+            return ResponseEntity.ok().build()
+        }
+        return ResponseEntity("User doesnt exist with given id", HttpStatus.NOT_FOUND)
+    }
+
+    @Transactional
+    @PostMapping("/{id}/unfollow")
+    fun unfollowUser(@Auth user: User, @PathVariable id: Int): ResponseEntity<Any> {
+        if (userRepository.existsById(id)) {
+            val toFollowUser: User = userRepository.findById(id).orElse(null)
+            val wantToFollowUser: User = userRepository.findById(user.id).orElse(null)
+            (wantToFollowUser.followedUsers as MutableSet<User>).remove(toFollowUser)
+            return ResponseEntity.ok().build()
+        }
+        return ResponseEntity("User doesnt exist with given id", HttpStatus.NOT_FOUND)
+    }
+
+    @Transactional
+    @GetMapping("/{id}/followed")
+    fun getFollowedUsers(@PathVariable id: Int):ResponseEntity<Any>{
+        if (userRepository.existsById(id)) {
+            val user: User = userRepository.findById(id).orElse(null)
+            return ResponseEntity.ok(user.followedUsers?.map { user ->
+                GetUserForGetRecipeDTO(user.id,user.userName,user.email)
+            })
+        }
+        return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)
+    }
+
+    @Transactional
+    @GetMapping("/{id}/followers")
+    fun getFollowers(@PathVariable id: Int):ResponseEntity<Any>{
+        if (userRepository.existsById(id)) {
+            val user: User = userRepository.findById(id).orElse(null)
+            return ResponseEntity.ok(user.followers?.map { user ->
+                GetUserForGetRecipeDTO(user.id,user.userName,user.email)
             })
         }
         return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)

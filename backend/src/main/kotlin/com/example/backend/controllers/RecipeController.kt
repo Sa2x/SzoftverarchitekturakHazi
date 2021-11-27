@@ -21,6 +21,7 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     @GetMapping
     fun getAllRecipe(): ResponseEntity<Any> = ResponseEntity.ok(recipeRepository.findAll())
 
+    @Transactional
     @PostMapping
     fun uploadRecipe(@Auth user: User, @RequestBody recipe: CreateRecipeDTO): ResponseEntity<Any> {
         if (userRepository.existsById(user.id)) {
