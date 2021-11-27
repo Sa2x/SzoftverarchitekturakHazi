@@ -5,24 +5,16 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
-import { LoginComponent } from './login/login.component';
-
-import { authInterceptorProviders } from './helpers/auth.interceptor';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { HomeComponent } from './home/home.component';
-import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TopBarComponent,
-    LoginComponent,
     RegisterComponent,
+    LoginComponent,
     ProfileComponent,
-    HomeComponent,
-    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +22,7 @@ import { UserComponent } from './user/user.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
