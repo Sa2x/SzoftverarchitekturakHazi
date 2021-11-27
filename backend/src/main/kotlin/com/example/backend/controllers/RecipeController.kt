@@ -1,7 +1,7 @@
 package com.example.backend.controllers
 
+import com.example.backend.auth.Auth
 import com.example.backend.dto.CreateRecipeDTO
-import com.example.backend.dto.DeleteRecipeDTO
 import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.repositories.RecipeRepository
@@ -16,8 +16,8 @@ import java.util.*
 class RecipeController(private val recipeRepository: RecipeRepository, private val userRepository: UserRepository) {
 
     @PostMapping
-    fun uploadRecipe(@RequestBody recipe: CreateRecipeDTO): ResponseEntity<Any> {
-        val user: Optional<User> = userRepository.findById(recipe.creatorId);
+    fun uploadRecipe(@Auth user:User, @RequestBody recipe: CreateRecipeDTO): ResponseEntity<Any> {
+        val user: Optional<User> = userRepository.findById(user.id);
         if (user.isPresent) {
             val foundUser: User = user.get()
             val newUploadedRecipes: MutableList<Recipe>? = foundUser.uploadedRecipes as MutableList<Recipe>?
@@ -29,27 +29,27 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     }
 
     @DeleteMapping("/{id}")
-    fun deleteRecipe(@PathVariable id: Int, @RequestBody body: DeleteRecipeDTO): ResponseEntity<Any> {
+    fun deleteRecipe(@Auth user:User, @PathVariable id: Int): ResponseEntity<Any> {
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
-            if (body.userId == recipe.user.id) {
+            if (user.id == recipe.user.id) {
                 recipeRepository.delete(recipe)
                 return ResponseEntity.ok().build()
             }
-            return ResponseEntity("The user id doesn't match the recipe's creator ID", HttpStatus.BAD_REQUEST)
+            return ResponseEntity("You can't delete other user's recipes", HttpStatus.BAD_REQUEST)
         }
         return ResponseEntity("The recipe doesn't exist with the given id", HttpStatus.NOT_FOUND)
     }
 
     @PutMapping("/{id}")
-    fun updateRecipe(@PathVariable id:Int, @RequestBody updatedRecipe:CreateRecipeDTO):ResponseEntity<Any> {
+    fun updateRecipe(@Auth user:User, @PathVariable id:Int, @RequestBody updatedRecipe:CreateRecipeDTO):ResponseEntity<Any> {
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
-            if(updatedRecipe.creatorId == recipe.user.id) {
+            if(user.id == recipe.user.id) {
                 recipeRepository.save(recipe.copy(name = updatedRecipe.name))
                 return ResponseEntity.ok().build();
             }
-            return ResponseEntity("The user id doesn't match the recipe's creator ID", HttpStatus.BAD_REQUEST)
+            return ResponseEntity("You can't modify other user's recipes", HttpStatus.BAD_REQUEST)
         }
         return ResponseEntity("The recipe doesn't exist with the given id", HttpStatus.NOT_FOUND)
     }
