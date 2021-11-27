@@ -1,5 +1,6 @@
 package com.example.backend.entities
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -14,4 +15,8 @@ data class Recipe(
     val user:User,
     @ManyToMany(mappedBy = "likedRecipes")
     val likes:Set<User>?= emptySet()
-)
+){
+    override fun hashCode(): Int {
+        return Objects.hash(name); //base hash off same as equals the id_address
+    }
+}

@@ -1,6 +1,7 @@
 package com.example.backend.entities
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -28,7 +29,11 @@ data class User (
         joinColumns = [ JoinColumn(name = "follower") ],
         inverseJoinColumns = [ JoinColumn(name = "followed") ]
     )
-    val followedUsers:List<User>?= emptyList(),
+    val followedUsers:Set<User>?= emptySet(),
     @ManyToMany(mappedBy = "followedUsers")
-    val followers:List<User>?= emptyList(),
-)
+    val followers:Set<User>?= emptySet(),
+){
+    override fun hashCode(): Int {
+        return Objects.hash(email); //base hash off same as equals the id_address
+    }
+}
