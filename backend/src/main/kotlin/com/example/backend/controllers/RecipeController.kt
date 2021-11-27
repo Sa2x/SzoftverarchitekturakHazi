@@ -42,7 +42,16 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     }
 
     @PutMapping("/{id}")
-    fun updateRecipe(@PathVariable id:Int, @RequestBody recipe:CreateRecipeDTO):ResponseEntity<Any> {
-        return ResponseEntity.ok();
+    fun updateRecipe(@PathVariable id:Int, @RequestBody updatedRecipe:CreateRecipeDTO):ResponseEntity<Any> {
+        if (recipeRepository.existsById(id)) {
+            val recipe: Recipe = recipeRepository.findById(id).orElse(null)
+            if(updatedRecipe.creatorId == recipe.user.id) {
+                recipeRepository.save(recipe.copy(name = updatedRecipe.name))
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity("The user id doesn't match the recipe's creator ID", HttpStatus.BAD_REQUEST)
+        }
+        return ResponseEntity("The recipe doesn't exist with the given id", HttpStatus.NOT_FOUND)
     }
+
 }
