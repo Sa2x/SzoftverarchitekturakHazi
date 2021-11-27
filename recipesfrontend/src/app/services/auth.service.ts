@@ -28,4 +28,8 @@ export class AuthService {
       password
     }, httpOptions);
   }
+
+  self(): Observable<any> {
+    return this.http.get(AUTH_API + "me", httpOptions)
+  }
 }
