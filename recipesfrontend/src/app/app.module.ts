@@ -8,7 +8,11 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+
 import { authInterceptorProviders } from './helpers/auth.interceptor';
+import { RecipesComponent } from './components/recipes/recipes.component';
+import { AddRecipeComponent } from './components/add-recipe/add-recipe.component';
+
 
 @NgModule({
   declarations: [
@@ -16,6 +20,8 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
+    RecipesComponent,
+    AddRecipeComponent
   ],
   imports: [
     BrowserModule,

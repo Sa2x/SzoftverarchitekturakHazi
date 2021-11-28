@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Kuki",
+        "user": "98",
+        "likes": 11
+    },
+    {
+        "id": 2,
+        "name": "PaprikásKrumpli",
+        "user": "98",
+        "likes": 2
+    },
+    {
+        "id": 3,
+        "name": "CSB",
+        "user": "2",
+        "likes": 0
+    }
+  ]

@@ -1,0 +1,23 @@
+.row {
+    display: flex;
+    height: 25%;
+  }
+  
+  .column {
+    flex: 50%;
+    padding: 10px;
+  }
+
+  .userDetails {
+    padding: 10px;
+    background-color: #bfd2bf;
+    height: 100%;
+    border-radius: 25px;
+  }
+  .newRecipe {
+    padding: 10px;
+    background-color: #bfd2bf;
+    height: 100%;
+    border-radius: 25px;
+    text-align: center;
+  }
