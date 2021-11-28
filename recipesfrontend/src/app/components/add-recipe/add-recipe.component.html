@@ -3,17 +3,14 @@
         name="form"
         (ngSubmit)="f.form.valid && onSubmit()"
         #f="ngForm"
-        novalidate
-        >
+        novalidate>
         <div class="row">
             <div class="imageColumn">
-                <div class="imageHolder" *ngIf="filePath && filePath !== ''">
-                    <img [src]="filePath">
-                </div>
+                <img [src]="filePath">
             </div>
             <div class="column">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <h4><label for="name">Name</label></h4>
                     <input
                         type="text"
                         class="form-control"
@@ -27,7 +24,8 @@
                         *ngIf="name.errors && f.submitted">
                         Name is required!
                     </div>
-                    <label for="desc">Description</label>
+                    <br>
+                    <h4><label for="desc">Description</label></h4>
                     <textarea
                         type="text"
                         class="form-control"
@@ -41,7 +39,8 @@
                         *ngIf="name.errors && f.submitted">
                         Name is required!
                     </div>
-                    <label for="Image">Image</label>
+                    <br>
+                    <h4><label for="Image">Image</label></h4>
                     <input
                         type="file"
                         (change)="onFileChanged($event)"
@@ -58,31 +57,31 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-check">
+            <div class="dietColumn">
                 <input class="form-check-input" type="checkbox" value="STANDARD" id="standardCheck" (change)="checkCheckBoxvalue($event)">
                 <label class="form-check-label" for="standardCheck">
                 Standard
                 </label>
             </div>
-            <div class="form-check">
+            <div class="dietColumn">
                 <input class="form-check-input" type="checkbox" value="LACTOSE_FREE" id="lactoseCheck" (change)="checkCheckBoxvalue($event)">
                 <label class="form-check-label" for="lactoseCheck">
                 Lactose Free
                 </label>
             </div>
-            <div class="form-check">
+            <div class="dietColumn">
                 <input class="form-check-input" type="checkbox" value="GLUTEN_FREE" id="glutenCheck" (change)="checkCheckBoxvalue($event)">
                 <label class="form-check-label" for="glutenCheck">
                 Gluten Free
                 </label>
             </div>
-            <div class="form-check">
+            <div class="dietColumn">
                 <input class="form-check-input" type="checkbox" value="VEGETARIAN" id="vegetCheck" (change)="checkCheckBoxvalue($event)">
                 <label class="form-check-label" for="vegetCheck">
                 Vegetarian
                 </label>
             </div>
-            <div class="form-check">
+            <div class="dietColumn">
                 <input class="form-check-input" type="checkbox" value="VEGAN" id="veganCheck" (change)="checkCheckBoxvalue($event)">
                 <label class="form-check-label" for="veganCheck">
                 Vegan
@@ -90,27 +89,27 @@
             </div>
         </div>
         <div class="row">
-            <table class="table">
-                <thead>
-                    <th>Name</th>
-                    <th>Operation</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let ingridient of ingridients">
-                        <td >{{ingridient}}</td>
-                        <td><button type="button" class="btn btn-danger" (click)="removeIngridient(ingridient)"><i class="bi bi-trash-fill"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="name" required #newIngridient/></td>
-                        <td><button type="button" class="btn btn-success" (click)="addIngridient(newIngridient.value)"><i class="bi bi-plus-lg"></i></button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="row">
-            <div class="form-group">
-                <button class="btn btn-primary btn-block">
-                Create
+            <div class="column">
+                <table class="table table-borderless">
+                    <thead>
+                        <th>Name</th>
+                        <th>Operation</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ingridient of ingridients">
+                            <td >{{ingridient}}</td>
+                            <td><button type="button" class="btn btn-danger" (click)="removeIngridient(ingridient)"><i class="bi bi-trash-fill"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="name" required #newIngridient/></td>
+                            <td><button type="button" class="btn btn-success" (click)="addIngridient(newIngridient.value)"><i class="bi bi-plus-lg"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="submitColumn">
+                <button class="btn btn-primary">
+                    <h3>Create Recipe</h3>
                 </button>
             </div>
         </div>
