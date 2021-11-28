@@ -14,21 +14,27 @@ export class RecipesComponent implements OnInit {
   constructor(private recipeService: RecipeService) {}
 
   ngOnInit(): void {
-    this.recipeService.getAll().subscribe(
-      (data) => {
-        this.recipes = data;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  get filterByUserId() {
-    console.log(this.user, this.recipes);
-    return this.recipes.filter(
-      (r: { user: { id: number } }) => r.user.id == this.user.id
-    );
+    if(this.user) {
+      this.recipeService.getAllByUserId(this.user.id).subscribe(
+        data => {
+          this.recipes = data;
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
+    else {
+      this.recipeService.getAll().subscribe(
+        data => {
+          console.log(data);
+          this.recipes = data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   delRecipe(id: number): void {

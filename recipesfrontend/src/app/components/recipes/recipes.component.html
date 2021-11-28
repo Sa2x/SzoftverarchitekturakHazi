@@ -3,29 +3,23 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
+        <th scope="col">Image</th>
         <th scope="col">Name</th>
         <th scope="col">User</th>
         <th scope="col">Likes</th>
         <th scope="col" *ngIf="user">Operations</th>
       </tr>
     </thead>
-    <tbody *ngIf="user">
-        <tr *ngFor="let recipe of filterByUserId">
+    <tbody>
+        <tr *ngFor="let recipe of recipes">
           <td>{{recipe.id}}</td>
-          <td>{{recipe.name}}</td>
-          <td>{{recipe.user}}</td>
+          <td><img src="{{recipe.imageURL}}"/></td>
+          <td><a [routerLink]="['/recipes', recipe.id]">{{recipe.name}}</a></td>
+          <td><a [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a></td>
           <td>{{recipe.likes}}</td>
-          <td><button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
+          <td *ngIf="user"><button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
             <button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button></td>
         </tr>
     </tbody>
-    <tbody *ngIf="!user">
-      <tr *ngFor="let recipe of recipes">
-        <td>{{recipe.id}}</td>
-        <td><a [routerLink]="['/recipes', recipe.id]">{{recipe.name}}</a></td>
-        <td>{{recipe.user}}</td>
-        <td>{{recipe.likes}}</td>
-      </tr>
-  </tbody>
   </table>
 </div>

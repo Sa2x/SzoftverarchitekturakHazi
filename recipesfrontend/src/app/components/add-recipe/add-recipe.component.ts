@@ -8,15 +8,23 @@ import { RecipeService } from 'src/app/services/recipe.service';
   styleUrls: ['./add-recipe.component.css']
 })
 export class AddRecipeComponent implements OnInit {
+  filePath: string;
   selectedFile: any
   form: any = {
     name: null,
     image: File
   };
-  constructor(private recipeService : RecipeService,  private router: Router) { }
+  constructor(private recipeService : RecipeService,  private router: Router) {
+    this.filePath = '';
+   }
 
   onFileChanged(event: any ) {
     this.selectedFile = event.target.files[0]
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.filePath = reader.result as string;
+    }
+    reader.readAsDataURL(this.selectedFile)
   }
 
   ngOnInit(): void {
