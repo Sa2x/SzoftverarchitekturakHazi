@@ -1,0 +1,67 @@
+.row {
+display: flex;
+align-content: flex-start
+}
+
+.column {
+padding: 10px;
+flex-grow: 5;
+align-content: flex-start
+}
+
+.imageColumn {
+padding: 10px;
+flex-grow: 1;
+align-content: flex-start
+}
+
+.likeColumn {
+    padding: 10px;
+    height: 100%;
+    align-content: flex-end
+    }
+
+img {
+    height: 300px;
+    width: auto;
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+    border-radius: 25px;
+}
+
+.imageHolder {
+    background-color: aqua;
+    border-radius: 25px;
+    height: 100%;
+    align-content: center;
+    padding: 10px;
+}
+  .userHolder {
+    background-color: aqua;
+    border-radius: 25px;
+    height: 100%;
+    padding: 20px;
+}
+
+.likeHolder {
+    height: 50%;
+    width: 100%;
+    align-items: center;
+}
+
+.btn {
+    height: 100%;
+    width: 100%;
+}
+
+.likeCounter {
+    text-align: center;
+}
+
+.ingridientHolder {
+    background-color: aqua;
+    border-radius: 25px;
+    height: 100%;
+    padding: 20px;
+}
