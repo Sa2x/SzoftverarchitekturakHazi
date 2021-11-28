@@ -1,6 +1,8 @@
 package com.example.backend.entities
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import java.util.*
 import javax.persistence.*
 import kotlin.jvm.Transient
@@ -14,9 +16,13 @@ data class Recipe(
     val name: String,
     @Lob
     val description: String,
-    @Transient
+    @ElementCollection
+    @CollectionTable(name="ingredients")
+    @Fetch(FetchMode.SUBSELECT)
     val ingredients: Set<String>,
-    @Transient
+    @ElementCollection
+    @CollectionTable(name="diets")
+    @Fetch(FetchMode.SUBSELECT)
     val diets: Set<Diet>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

@@ -67,13 +67,9 @@ class UserController(private val userRepository: UserRepository) {
         if (userRepository.existsById(id)) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.uploadedRecipes?.map { recipe ->
-                GetRecipeDTO(
+                GetReducedRecipeDTO(
                     recipe.id, recipe.name, "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
-                    GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                    recipe.description,
-                    recipe.ingredients,
-                    recipe.diets
-                )
+                    GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),null)
             })
         }
         return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)

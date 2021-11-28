@@ -3,6 +3,7 @@ package com.example.backend.controllers
 import com.example.backend.auth.Auth
 import com.example.backend.dto.CreateRecipeDTO
 import com.example.backend.dto.GetRecipeDTO
+import com.example.backend.dto.GetReducedRecipeDTO
 import com.example.backend.dto.GetUserForGetRecipeDTO
 import com.example.backend.entities.Diet
 import com.example.backend.entities.Recipe
@@ -28,6 +29,7 @@ class RecipeController(
     private val emailService: EmailService
 ) {
 
+    @Transactional
     @GetMapping
     fun getAllRecipe(
         @RequestParam("creator") creator: String?,
@@ -40,17 +42,16 @@ class RecipeController(
         .filter { recipe -> diet == null || recipe.diets.contains(diet)}
         .filter { recipe -> name.isNullOrBlank() || recipe.name.contains(name) }
         .map { recipe ->
-            GetRecipeDTO(
+            GetReducedRecipeDTO(
                 recipe.id,
                 recipe.name,
                 "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                 GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                recipe.description,
-                recipe.ingredients,
-                recipe.diets
+                recipe.likes
             )
         })
 
+    @Transactional
     @GetMapping("/{id}")
     fun getRecipeById(@PathVariable id: Int): ResponseEntity<Any> {
         if (recipeRepository.existsById(id)) {
