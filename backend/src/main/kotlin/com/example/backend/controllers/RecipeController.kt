@@ -8,6 +8,7 @@ import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.repositories.RecipeRepository
 import com.example.backend.repositories.UserRepository
+import com.fasterxml.jackson.databind.util.JSONPObject
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -49,13 +50,13 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     @PostMapping
     fun uploadRecipe(
         @Auth user: User,
-        @RequestParam("file") file: MultipartFile,
-        @RequestParam("recipe") recipe: CreateRecipeDTO
+        @ModelAttribute recipe:CreateRecipeDTO
     ): ResponseEntity<Any> {
+
         if (userRepository.existsById(user.id)) {
             val foundUser: User = userRepository.findById(user.id).get()
             val newUploadedRecipes: MutableList<Recipe>? = foundUser.uploadedRecipes as MutableList<Recipe>?
-            newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = file.bytes))
+            newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes))
             userRepository.save(foundUser.copy(uploadedRecipes = newUploadedRecipes))
             return ResponseEntity.ok().build()
         }
