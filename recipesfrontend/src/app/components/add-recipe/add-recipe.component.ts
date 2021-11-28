@@ -19,7 +19,7 @@ export class AddRecipeComponent implements OnInit {
   diets: string[];
 
   constructor(private recipeService : RecipeService,  private router: Router) {
-    this.filePath = '';
+    this.filePath = '/assets/imageplaceholder.png';
     this.ingridients = new Array();
     this.diets = new Array();
    }
