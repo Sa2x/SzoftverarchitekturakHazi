@@ -23,10 +23,14 @@
             >
             Name is required!
             </div>
+            <div *ngIf="filePath && filePath !== ''">
+                <img [src]="filePath">
+              </div>
             <label for="Image">Image</label>
             <input
             type="file"
             (change)="onFileChanged($event)"
+            accept="image/*" 
             class="form-control"
             name="file"
             [(ngModel)]="form.file"

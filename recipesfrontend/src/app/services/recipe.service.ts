@@ -15,7 +15,6 @@ export class RecipeService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<any> {
-    // return this.http.get('assets/recipes.json');
     return this.http.get(AUTH_API);
   }
 
@@ -30,7 +29,11 @@ export class RecipeService {
     return this.http.delete(AUTH_API + id);
   }
 
-  getById(id: number): Observable<any> {
-    return this.http.get('assets/recipe.json');
+  getById(id:number):Observable<any> {
+    return this.http.get(AUTH_API + id);
+  }
+
+  getAllByUserId(userId:number):Observable<any> {
+    return this.http.get("http://localhost:8080/api/user/" + userId + "/uploaded") 
   }
 }

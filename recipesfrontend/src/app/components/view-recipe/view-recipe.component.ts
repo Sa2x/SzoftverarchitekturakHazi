@@ -9,6 +9,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 })
 export class ViewRecipeComponent implements OnInit {
   recipe : any
+  isLiked : any
   constructor(private recipeService : RecipeService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -17,12 +18,19 @@ export class ViewRecipeComponent implements OnInit {
 
     this.recipeService.getById(recipeIdFromRoute).subscribe(
       data => {
+        console.log(data);
         this.recipe = data;
+        this.isLiked = false;
       },
       err => {
         console.log(err);
       }
     );
+  }
+
+  likeRecipe(): void {
+    this.isLiked = !this.isLiked;
+    this.ngOnInit();
   }
 
 }
