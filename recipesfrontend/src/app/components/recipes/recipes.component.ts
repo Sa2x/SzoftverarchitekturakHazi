@@ -28,4 +28,15 @@ export class RecipesComponent implements OnInit {
     return this.recipes.filter( (r: { user: number; }) => r.user == this.user.id);
   }
 
+  delRecipe(id: number): void {
+    this.recipeService.delete(id).subscribe(
+      data => {
+        this.ngOnInit();
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
 }

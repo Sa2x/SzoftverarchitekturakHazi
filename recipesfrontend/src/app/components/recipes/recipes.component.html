@@ -15,7 +15,7 @@
           <td>{{recipe.name}}</td>
           <td>{{recipe.user}}</td>
           <td>{{recipe.likes}}</td>
-          <td><button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+          <td><button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
             <button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button></td>
         </tr>
     </tbody>

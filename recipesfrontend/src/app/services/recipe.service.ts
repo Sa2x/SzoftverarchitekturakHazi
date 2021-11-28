@@ -25,4 +25,8 @@ export class RecipeService {
       name
     }, httpOptions)
   }
+
+  delete(id: number):Observable<any> {
+    return this.http.delete(AUTH_API + id)
+  }
 }
