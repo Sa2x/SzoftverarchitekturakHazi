@@ -6,6 +6,7 @@ import com.example.backend.dto.GetRecipeDTO
 import com.example.backend.dto.GetUserForGetRecipeDTO
 import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
+import com.example.backend.mail.EmailService
 import com.example.backend.repositories.RecipeRepository
 import com.example.backend.repositories.UserRepository
 import com.fasterxml.jackson.databind.util.JSONPObject
@@ -20,7 +21,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/recipe")
-class RecipeController(private val recipeRepository: RecipeRepository, private val userRepository: UserRepository) {
+class RecipeController(private val recipeRepository: RecipeRepository, private val userRepository: UserRepository, private val emailService: EmailService) {
 
     @GetMapping
     fun getAllRecipe(): ResponseEntity<Any> = ResponseEntity.ok(recipeRepository.findAll().map { recipe ->
@@ -58,6 +59,7 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
             val newUploadedRecipes: MutableList<Recipe>? = foundUser.uploadedRecipes as MutableList<Recipe>?
             newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes))
             userRepository.save(foundUser.copy(uploadedRecipes = newUploadedRecipes))
+            emailService.sendSimpleMessage("hasza98@gmail.com",user.userName+" uploaded new recipe", user.userName+"just uploaded new recipe, check it out.")
             return ResponseEntity.ok().build()
         }
         return ResponseEntity.notFound().build()
