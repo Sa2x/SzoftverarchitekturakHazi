@@ -8,6 +8,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
   styleUrls: ['./add-recipe.component.css']
 })
 export class AddRecipeComponent implements OnInit {
+  
   form: any = {
     name: null
   };
