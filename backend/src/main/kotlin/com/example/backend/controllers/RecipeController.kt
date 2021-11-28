@@ -4,6 +4,7 @@ import com.example.backend.auth.Auth
 import com.example.backend.dto.CreateRecipeDTO
 import com.example.backend.dto.GetRecipeDTO
 import com.example.backend.dto.GetUserForGetRecipeDTO
+import com.example.backend.entities.Diet
 import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.mail.EmailService
@@ -28,17 +29,27 @@ class RecipeController(
 ) {
 
     @GetMapping
-    fun getAllRecipe(): ResponseEntity<Any> = ResponseEntity.ok(recipeRepository.findAll().map { recipe ->
-        GetRecipeDTO(
-            recipe.id,
-            recipe.name,
-            "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
-            GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-            recipe.description,
-            recipe.ingredients,
-            recipe.diets
-        )
-    })
+    fun getAllRecipe(
+        @RequestParam("creator") creator: String?,
+        @RequestParam("ingredient") ingredient: String?,
+        @RequestParam("diet") diet: Diet?,
+        @RequestParam("name") name: String?,
+    ): ResponseEntity<Any> = ResponseEntity.ok(recipeRepository.findAll()
+        .filter { recipe -> creator.isNullOrBlank() || recipe.user.userName.contains(creator) }
+        .filter { recipe -> ingredient.isNullOrBlank() || recipe.ingredients.contains(ingredient) }
+        .filter { recipe -> diet == null || recipe.diets.contains(diet)}
+        .filter { recipe -> name.isNullOrBlank() || recipe.name.contains(name) }
+        .map { recipe ->
+            GetRecipeDTO(
+                recipe.id,
+                recipe.name,
+                "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
+                GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
+                recipe.description,
+                recipe.ingredients,
+                recipe.diets
+            )
+        })
 
     @GetMapping("/{id}")
     fun getRecipeById(@PathVariable id: Int): ResponseEntity<Any> {
@@ -69,7 +80,16 @@ class RecipeController(
         if (userRepository.existsById(user.id)) {
             val foundUser: User = userRepository.findById(user.id).get()
             val newUploadedRecipes: MutableList<Recipe>? = foundUser.uploadedRecipes as MutableList<Recipe>?
-            newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes,description = recipe.description,ingredients = recipe.ingredients,diets = recipe.diets))
+            newUploadedRecipes?.add(
+                Recipe(
+                    name = recipe.name,
+                    user = foundUser,
+                    recipePicture = recipe.file.bytes,
+                    description = recipe.description,
+                    ingredients = recipe.ingredients,
+                    diets = recipe.diets
+                )
+            )
             userRepository.save(foundUser.copy(uploadedRecipes = newUploadedRecipes))
             emailService.sendSimpleMessage(
                 "hasza98@gmail.com",
@@ -103,7 +123,14 @@ class RecipeController(
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
             if (user.id == recipe.user.id) {
-                recipeRepository.save(recipe.copy(name = updatedRecipe.name,description = updatedRecipe.description,diets = updatedRecipe.diets, ingredients = updatedRecipe.ingredients))
+                recipeRepository.save(
+                    recipe.copy(
+                        name = updatedRecipe.name,
+                        description = updatedRecipe.description,
+                        diets = updatedRecipe.diets,
+                        ingredients = updatedRecipe.ingredients
+                    )
+                )
                 return ResponseEntity.ok().build()
             }
             return ResponseEntity("You can't modify other user's recipes", HttpStatus.BAD_REQUEST)
