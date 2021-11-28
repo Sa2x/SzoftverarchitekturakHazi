@@ -57,8 +57,8 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
         if (userRepository.existsById(user.id)) {
             val foundUser: User = userRepository.findById(user.id).get()
             val newUploadedRecipes: MutableList<Recipe>? = foundUser.uploadedRecipes as MutableList<Recipe>?
-            //newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes))
-            //userRepository.save(foundUser.copy(uploadedRecipes = newUploadedRecipes))
+            newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes))
+            userRepository.save(foundUser.copy(uploadedRecipes = newUploadedRecipes))
             emailService.sendSimpleMessage("hasza98@gmail.com",user.userName+" uploaded new recipe", user.userName+"just uploaded new recipe, check it out.")
             return ResponseEntity.ok().build()
         }
@@ -87,7 +87,7 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
             if (user.id == recipe.user.id) {
-//                recipeRepository.save(recipe.copy(name = updatedRecipe.name))
+                recipeRepository.save(recipe.copy(name = updatedRecipe.name))
                 return ResponseEntity.ok().build()
             }
             return ResponseEntity("You can't modify other user's recipes", HttpStatus.BAD_REQUEST)
