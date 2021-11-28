@@ -61,6 +61,7 @@ class UserController(private val userRepository: UserRepository) {
         return ResponseEntity.ok(user)
     }
 
+    @Transactional
     @GetMapping("/{id}/uploaded")
     fun getUploadedRecipes(@PathVariable id: Int): ResponseEntity<Any> {
         if (userRepository.existsById(id)) {
