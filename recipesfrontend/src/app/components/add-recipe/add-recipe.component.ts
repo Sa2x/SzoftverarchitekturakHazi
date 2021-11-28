@@ -10,7 +10,8 @@ import { RecipeService } from 'src/app/services/recipe.service';
 export class AddRecipeComponent implements OnInit {
   
   form: any = {
-    name: null
+    name: null,
+    image: File
   };
   constructor(private recipeService : RecipeService,  private router: Router) { }
 
@@ -18,9 +19,7 @@ export class AddRecipeComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const { name } = this.form;
-
-    this.recipeService.create(name).subscribe(
+    this.recipeService.create(this.form.name, this.form.image).subscribe(
       data => {
         console.log(data);
         this.router.navigate(['/recipes']);

@@ -46,11 +46,11 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     }
 
     @Transactional
-    @PostMapping
+    @PostMapping(consumes = ["multipart/mixed"])
     fun uploadRecipe(
         @Auth user: User,
-        @RequestBody recipe: CreateRecipeDTO,
-        @RequestParam file: MultipartFile
+        @RequestPart recipe: CreateRecipeDTO,
+        @RequestPart file: MultipartFile
     ): ResponseEntity<Any> {
         if (userRepository.existsById(user.id)) {
             val foundUser: User = userRepository.findById(user.id).get()
