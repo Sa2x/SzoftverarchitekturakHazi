@@ -68,7 +68,7 @@ class UserController(private val userRepository: UserRepository) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.uploadedRecipes?.map { recipe ->
                 GetRecipeDTO(
-                    recipe.id, recipe.name,
+                    recipe.id, recipe.name,"http://localhost:8080/api/recipe/"+recipe.id+"/picture",
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
                 )
             })
@@ -83,7 +83,7 @@ class UserController(private val userRepository: UserRepository) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.likedRecipes?.map { recipe ->
                 GetRecipeDTO(
-                    recipe.id, recipe.name,
+                    recipe.id, recipe.name, "http://localhost:8080/api/recipe/"+recipe.id+"/picture",
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
                 )
             })
