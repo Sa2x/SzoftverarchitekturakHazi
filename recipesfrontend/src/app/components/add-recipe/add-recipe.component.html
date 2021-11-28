@@ -26,6 +26,7 @@
             <label for="Image">Image</label>
             <input
             type="file"
+            (change)="onFileChanged($event)"
             class="form-control"
             name="file"
             [(ngModel)]="form.file"

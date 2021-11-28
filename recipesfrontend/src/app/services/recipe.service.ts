@@ -13,24 +13,27 @@ const httpOptions = {
 })
 export class RecipeService {
 
+
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<any> {
-    //return this.http.get("assets/recipes.json");
-    return this.http.get(AUTH_API, httpOptions);
+    return this.http.get("assets/recipes.json");
+    //return this.http.get(AUTH_API, httpOptions);
   }
 
   create(name: string, image: File):Observable<any> {
     const formData = new FormData();
     formData.append("file", image);
-    return this.http.post(AUTH_API, {
-      formData,
-      name
-    }
-    , httpOptions)
+    formData.append("recipe", JSON.stringify({name:name}))
+    return this.http.post(AUTH_API, formData
+    ,{})
   }
 
   delete(id: number):Observable<any> {
     return this.http.delete(AUTH_API + id)
+  }
+
+  getById(id:number):Observable<any> {
+    return this.http.get("assets/recipe.json");
   }
 }
