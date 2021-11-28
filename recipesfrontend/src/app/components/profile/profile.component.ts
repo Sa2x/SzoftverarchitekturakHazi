@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
@@ -11,7 +12,7 @@ export class ProfileComponent implements OnInit {
   currentUser: any;
   token: any;
 
-  constructor(private authService : AuthService, private tokenStorageService : TokenStorageService) { }
+  constructor(private authService : AuthService, private tokenStorageService : TokenStorageService, private router: Router) { }
 
   ngOnInit(): void {
     this.token = this.tokenStorageService.getToken();
@@ -23,5 +24,9 @@ export class ProfileComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  goToNewRecipe(): void {
+    this.router.navigate(['/recipes/new']);
   }
 }
