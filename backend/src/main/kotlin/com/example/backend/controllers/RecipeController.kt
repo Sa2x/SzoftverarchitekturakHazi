@@ -8,8 +8,6 @@ import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.repositories.RecipeRepository
 import com.example.backend.repositories.UserRepository
-import org.hibernate.Criteria
-import org.hibernate.Hibernate
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -136,7 +134,7 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     @GetMapping("/{id}/picture")
     fun getRecipePicture(@PathVariable id: Int): ResponseEntity<Any> {
         return try {
-            val image: ByteArray = recipeRepository.findById(id).get().recipePicture
+            val image: ByteArray? = recipeRepository.findById(id).get().recipePicture
 
             ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))
