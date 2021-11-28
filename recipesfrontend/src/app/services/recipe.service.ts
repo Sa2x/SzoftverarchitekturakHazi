@@ -5,36 +5,35 @@ import { Observable } from 'rxjs';
 const AUTH_API = 'http://localhost:8080/api/recipe/';
 
 const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'multipart/mixed;boundary=???',
-  }),
+  headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' })
 };
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class RecipeService {
-  constructor(private http: HttpClient) {}
+
+
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<any> {
-    //return this.http.get("assets/recipes.json");
-    return this.http.get(AUTH_API, httpOptions);
+    return this.http.get("assets/recipes.json");
+    //return this.http.get(AUTH_API, httpOptions);
   }
 
-  create(name: string, image: File): Observable<any> {
+  create(name: string, image: File):Observable<any> {
     const formData = new FormData();
-    formData.append('recipe', name);
-    formData.append('file', image);
-    return this.http.post(
-      AUTH_API,
-      {
-        formData,
-      },
-      httpOptions
-    );
+    formData.append("file", image);
+    formData.append("recipe", JSON.stringify({name:name}))
+    return this.http.post(AUTH_API, formData
+    ,{})
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(AUTH_API + id);
+  delete(id: number):Observable<any> {
+    return this.http.delete(AUTH_API + id)
+  }
+
+  getById(id:number):Observable<any> {
+    return this.http.get("assets/recipe.json");
   }
 }

@@ -1,0 +1,21 @@
+{
+    "id": 1,
+    "name": "CSB",
+    "image": "/assets/csb.jpg",
+    "user": 
+    {
+        "id": 10,
+        "userName": "Sasa"
+    },
+    "likes": 11,
+    "ingridients": [
+        {
+            "name": "krumpli",
+            "amount": 10
+        },
+        {
+            "name": "víz",
+            "amount": 5
+        }
+    ]
+}

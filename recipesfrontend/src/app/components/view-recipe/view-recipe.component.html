@@ -1,0 +1,8 @@
+<div class="mainHolder">
+    <p>{{recipe.name}}</p>
+    <img src="{{recipe.image}}"/>
+    <p>{{recipe.likes}}</p>
+    <ul>
+        <li *ngFor="let ingridient of recipe.ingridients">{{ingridient.name}} of {{ingridient.amount}}</li>
+    </ul>
+</div>
