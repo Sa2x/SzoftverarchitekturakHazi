@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -10,27 +11,68 @@ import { RecipeService } from 'src/app/services/recipe.service';
 export class ViewRecipeComponent implements OnInit {
   recipe : any
   isLiked : any
-  constructor(private recipeService : RecipeService, private route: ActivatedRoute) { }
+  likers: any
+  currentUser : any
+  recipeId : any
+  constructor(private recipeService : RecipeService, private route: ActivatedRoute, private authService : AuthService ) { }
 
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
-    const recipeIdFromRoute = Number(routeParams.get('recipeId'));
-
-    this.recipeService.getById(recipeIdFromRoute).subscribe(
+    this.recipeId = Number(routeParams.get('recipeId'));
+    this.authService.self().subscribe(
       data => {
-        console.log(data);
-        this.recipe = data;
-        this.isLiked = false;
+        this.currentUser = data;
       },
       err => {
         console.log(err);
       }
     );
+    this.recipeService.getById(this.recipeId).subscribe(
+      data => {
+        console.log(data);
+        this.recipe = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.recipeService.getRecipeLikers(this.recipeId).subscribe(
+      data => {
+        this.likers = data;
+        if (this.likers.some((u: { id: number; }) => u.id === this.currentUser.id)) {
+          this.isLiked = true;
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 
   likeRecipe(): void {
     this.isLiked = !this.isLiked;
-    this.ngOnInit();
+    if(this.isLiked) {
+      this.recipeService.likeRecipe(this.recipeId).subscribe(
+        data => {
+          this.ngOnInit();
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+    else {
+      this.recipeService.unLikeRecipe(this.recipeId).subscribe(
+        data => {
+          this.ngOnInit();
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+    
   }
 
 }

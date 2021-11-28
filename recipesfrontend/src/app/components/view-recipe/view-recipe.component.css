@@ -31,14 +31,14 @@ img {
 }
 
 .imageHolder {
-    background-color: aqua;
+    background-color: #b1e5f2;
     border-radius: 25px;
     height: 100%;
     align-content: center;
     padding: 10px;
 }
   .userHolder {
-    background-color: aqua;
+    background-color: #b1e5f2;
     border-radius: 25px;
     height: 100%;
     padding: 20px;
@@ -60,7 +60,7 @@ img {
 }
 
 .ingridientHolder {
-    background-color: aqua;
+    background-color: #b1e5f2;
     border-radius: 25px;
     height: 100%;
     padding: 20px;

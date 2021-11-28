@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const AUTH_API = 'http://localhost:8080/api/recipe/';
+const RECIPE_API = 'http://localhost:8080/api/recipe/';
+const USER_API = 'http://localhost:8080/api/user/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
@@ -15,7 +16,7 @@ export class RecipeService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<any> {
-    return this.http.get(AUTH_API);
+    return this.http.get(RECIPE_API);
   }
 
   create(
@@ -35,20 +36,31 @@ export class RecipeService {
     ingridients.forEach((ingridient) => {
       formData.append('ingredients', ingridient);
     });
-    return this.http.post(AUTH_API, formData, {});
+    return this.http.post(RECIPE_API, formData, {});
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete(AUTH_API + id);
+    return this.http.delete(RECIPE_API + id);
   }
 
   getById(id: number): Observable<any> {
-    return this.http.get(AUTH_API + id);
+    return this.http.get(RECIPE_API + id);
   }
 
   getAllByUserId(userId: number): Observable<any> {
-    return this.http.get(
-      'http://localhost:8080/api/user/' + userId + '/uploaded'
+    return this.http.get(USER_API + userId + '/uploaded'
     );
+  }
+
+  getRecipeLikers(id: number): Observable<any> {
+    return this.http.get(RECIPE_API + id + '/likes')
+  }
+
+  likeRecipe(id:number): Observable<any> {
+    return this.http.post(RECIPE_API + id + '/like', "",);
+  }
+
+  unLikeRecipe(id:number): Observable<any> {
+    return this.http.post(RECIPE_API + id + '/unlike', "",);
   }
 }
