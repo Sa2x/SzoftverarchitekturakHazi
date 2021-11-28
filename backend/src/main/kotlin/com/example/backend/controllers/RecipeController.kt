@@ -21,13 +21,22 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/recipe")
-class RecipeController(private val recipeRepository: RecipeRepository, private val userRepository: UserRepository, private val emailService: EmailService) {
+class RecipeController(
+    private val recipeRepository: RecipeRepository,
+    private val userRepository: UserRepository,
+    private val emailService: EmailService
+) {
 
     @GetMapping
     fun getAllRecipe(): ResponseEntity<Any> = ResponseEntity.ok(recipeRepository.findAll().map { recipe ->
         GetRecipeDTO(
-            recipe.id, recipe.name, "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
-            GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
+            recipe.id,
+            recipe.name,
+            "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
+            GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
+            recipe.description,
+            recipe.ingredients,
+            recipe.diets
         )
     })
 
@@ -40,7 +49,10 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
                     recipe.id,
                     recipe.name,
                     "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
-                    GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
+                    GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
+                    recipe.description,
+                    recipe.ingredients,
+                    recipe.diets
                 )
             )
         }
@@ -51,15 +63,19 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
     @PostMapping
     fun uploadRecipe(
         @Auth user: User,
-        @ModelAttribute recipe:CreateRecipeDTO
+        @ModelAttribute recipe: CreateRecipeDTO
     ): ResponseEntity<Any> {
 
         if (userRepository.existsById(user.id)) {
             val foundUser: User = userRepository.findById(user.id).get()
             val newUploadedRecipes: MutableList<Recipe>? = foundUser.uploadedRecipes as MutableList<Recipe>?
-            newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes))
+            newUploadedRecipes?.add(Recipe(name = recipe.name, user = foundUser, recipePicture = recipe.file.bytes,description = recipe.description,ingredients = recipe.ingredients,diets = recipe.diets))
             userRepository.save(foundUser.copy(uploadedRecipes = newUploadedRecipes))
-            emailService.sendSimpleMessage("hasza98@gmail.com",user.userName+" uploaded new recipe", user.userName+"just uploaded new recipe, check it out.")
+            emailService.sendSimpleMessage(
+                "hasza98@gmail.com",
+                user.userName + " uploaded new recipe",
+                user.userName + "just uploaded new recipe, check it out."
+            )
             return ResponseEntity.ok().build()
         }
         return ResponseEntity.notFound().build()
@@ -87,7 +103,7 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
             if (user.id == recipe.user.id) {
-                recipeRepository.save(recipe.copy(name = updatedRecipe.name))
+                recipeRepository.save(recipe.copy(name = updatedRecipe.name,description = updatedRecipe.description,diets = updatedRecipe.diets, ingredients = updatedRecipe.ingredients))
                 return ResponseEntity.ok().build()
             }
             return ResponseEntity("You can't modify other user's recipes", HttpStatus.BAD_REQUEST)
@@ -114,9 +130,7 @@ class RecipeController(private val recipeRepository: RecipeRepository, private v
         val foundUser: User? = userRepository.findById(user.id).orElse(null)
         val likedRecipes = foundUser!!.likedRecipes as MutableSet<Recipe>
         return if (recipeRepository.existsById(id)) {
-            //val recipeId: Int = recipeRepository.findById(id).get().id
             likedRecipes.remove(recipeRepository.findById(id).get())
-            //likedRecipes.filter { recipe -> recipe.id != recipeId }
             ResponseEntity.ok().build()
         } else {
             ResponseEntity("Recipe with the given id doesnt exist", HttpStatus.NOT_FOUND)

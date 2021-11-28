@@ -3,25 +3,34 @@ package com.example.backend.entities
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 import javax.persistence.*
+import kotlin.jvm.Transient
 
 @Entity
 data class Recipe(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id:Int=0,
-    @Column(unique=true)
-    val name:String,
+    val id: Int = 0,
+    @Column(unique = true)
+    val name: String,
+    @Lob
+    val description: String,
+    @Transient
+    val ingredients: Set<String>,
+    @Transient
+    val diets: Set<Diet>,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id",nullable = false)
-    val user:User,
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User,
+
     @ManyToMany(mappedBy = "likedRecipes")
-    val likes:Set<User>?= emptySet(),
+    val likes: Set<User>? = emptySet(),
+
     @JsonIgnore
     @Lob
     val recipePicture: ByteArray?
-){
+) {
     override fun hashCode(): Int {
-        return Objects.hash(name); //base hash off same as equals the id_address
+        return Objects.hash(name)
     }
 
     override fun equals(other: Any?): Boolean {
