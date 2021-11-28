@@ -12,6 +12,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { AddRecipeComponent } from './components/add-recipe/add-recipe.component';
+import { ViewRecipeComponent } from './components/view-recipe/view-recipe.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AddRecipeComponent } from './components/add-recipe/add-recipe.component
     LoginComponent,
     ProfileComponent,
     RecipesComponent,
-    AddRecipeComponent
+    AddRecipeComponent,
+    ViewRecipeComponent
   ],
   imports: [
     BrowserModule,
