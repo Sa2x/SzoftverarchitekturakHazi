@@ -18,10 +18,13 @@ export class RecipeService {
     return this.http.get(AUTH_API);
   }
 
-  create(name: string, image: File): Observable<any> {
+  create(name: string, image: File, description: string, diet: string[], ingridients:string[]): Observable<any> {
     const formData = new FormData();
     formData.append('file', image);
     formData.append('name', name);
+    formData.append('description', description);
+    formData.append('diets', new Blob([JSON.stringify(diet)]));
+    formData.append('ingredients', new Blob([JSON.stringify(ingridients)]));
     return this.http.post(AUTH_API, formData, {});
   }
 
