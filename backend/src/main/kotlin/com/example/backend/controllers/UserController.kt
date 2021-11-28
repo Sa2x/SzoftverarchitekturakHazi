@@ -2,10 +2,8 @@ package com.example.backend.controllers
 
 import com.example.backend.auth.Auth
 import com.example.backend.dto.*
-import com.example.backend.entities.Recipe
 import com.example.backend.entities.User
 import com.example.backend.repositories.UserRepository
-import io.jsonwebtoken.Jwt
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.http.HttpStatus
@@ -13,14 +11,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
-import kotlin.collections.HashMap
 
 @RestController
 @RequestMapping("/api/user")
 class UserController(private val userRepository: UserRepository) {
 
+
+    @GetMapping
+    fun getAllUsers(): ResponseEntity<Any> = ResponseEntity.ok(
+        userRepository.findAll().map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
 
     @PostMapping("/register")
     fun register(@RequestBody user: RegisterUserDTO): ResponseEntity<Any> {
@@ -68,7 +68,7 @@ class UserController(private val userRepository: UserRepository) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.uploadedRecipes?.map { recipe ->
                 GetRecipeDTO(
-                    recipe.id, recipe.name,"http://localhost:8080/api/recipe/"+recipe.id+"/picture",
+                    recipe.id, recipe.name, "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
                 )
             })
@@ -83,7 +83,7 @@ class UserController(private val userRepository: UserRepository) {
             val user: User = userRepository.findById(id).orElse(null)
             return ResponseEntity.ok(user.likedRecipes?.map { recipe ->
                 GetRecipeDTO(
-                    recipe.id, recipe.name, "http://localhost:8080/api/recipe/"+recipe.id+"/picture",
+                    recipe.id, recipe.name, "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email)
                 )
             })
@@ -117,11 +117,11 @@ class UserController(private val userRepository: UserRepository) {
 
     @Transactional
     @GetMapping("/{id}/followed")
-    fun getFollowedUsers(@PathVariable id: Int):ResponseEntity<Any>{
+    fun getFollowedUsers(@PathVariable id: Int): ResponseEntity<Any> {
         if (userRepository.existsById(id)) {
             val user: User = userRepository.findById(id).orElse(null)
-            return ResponseEntity.ok(user.followedUsers?.map { user ->
-                GetUserForGetRecipeDTO(user.id,user.userName,user.email)
+            return ResponseEntity.ok(user.followedUsers?.map { followed ->
+                GetUserForGetRecipeDTO(followed.id, followed.userName, followed.email)
             })
         }
         return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)
@@ -129,11 +129,11 @@ class UserController(private val userRepository: UserRepository) {
 
     @Transactional
     @GetMapping("/{id}/followers")
-    fun getFollowers(@PathVariable id: Int):ResponseEntity<Any>{
+    fun getFollowers(@PathVariable id: Int): ResponseEntity<Any> {
         if (userRepository.existsById(id)) {
             val user: User = userRepository.findById(id).orElse(null)
-            return ResponseEntity.ok(user.followers?.map { user ->
-                GetUserForGetRecipeDTO(user.id,user.userName,user.email)
+            return ResponseEntity.ok(user.followers?.map { follower ->
+                GetUserForGetRecipeDTO(follower.id, follower.userName, follower.email)
             })
         }
         return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)
