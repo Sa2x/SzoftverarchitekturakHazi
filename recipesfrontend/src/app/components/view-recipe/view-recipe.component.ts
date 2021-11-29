@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-view-recipe',
@@ -14,9 +15,11 @@ export class ViewRecipeComponent implements OnInit {
   likers: any
   currentUser : any
   recipeId : any
-  constructor(private recipeService : RecipeService, private route: ActivatedRoute, private authService : AuthService ) { }
+  token:any
+  constructor(private recipeService : RecipeService, private route: ActivatedRoute, private authService : AuthService, private tokenStorageService:TokenStorageService ) { }
 
   ngOnInit(): void {
+    this.token = this.tokenStorageService.getToken();
     const routeParams = this.route.snapshot.paramMap;
     this.recipeId = Number(routeParams.get('recipeId'));
     this.authService.self().subscribe(

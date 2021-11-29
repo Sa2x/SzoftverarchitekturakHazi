@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<div class="col-md-12" *ngIf="token; else loggedOut">
   <div class="row" *ngFor="let recipe of recipes">
     <div class="imageHolder">
       <img src="{{recipe.imageURL}}"/>
@@ -31,3 +31,15 @@
     </div>
   </div>
 </div>
+<ng-template #loggedOut >
+  <div class="messageHolder">
+      <div class="col-md-3">
+          Please login to acces this site.
+      <br>
+      <hr>
+      <a [routerLink]="['/login']">
+          <button type="button" class="btn btn-outline-danger btn-block">To Login Page</button>
+      </a>
+      </div>
+  </div>
+</ng-template>

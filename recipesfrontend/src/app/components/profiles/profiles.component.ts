@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-profiles',
@@ -8,9 +9,11 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProfilesComponent implements OnInit {
   users:any
-  constructor(private authService : AuthService) { }
+  token:any
+  constructor(private authService : AuthService, private tokenStorageService:TokenStorageService) { }
 
   ngOnInit(): void {
+    this.token = this.tokenStorageService.getToken();
     this.authService.getAllUsers().subscribe(
       data => {
         this.users = data;

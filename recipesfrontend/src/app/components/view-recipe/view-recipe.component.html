@@ -1,4 +1,4 @@
-<div class="col-md-10">
+<div class="col-md-10" *ngIf="token; else loggedOut">
     <div class="row">
         <div class="imageColumn">
             <div class="imageHolder">
@@ -40,3 +40,15 @@
         </ul>
     </div>
 </div>
+<ng-template #loggedOut >
+    <div class="messageHolder">
+        <div class="col-md-3">
+            Please login to acces this site.
+        <br>
+        <hr>
+        <a [routerLink]="['/login']">
+            <button type="button" class="btn btn-outline-danger btn-block">To Login Page</button>
+        </a>
+        </div>
+    </div>
+</ng-template>

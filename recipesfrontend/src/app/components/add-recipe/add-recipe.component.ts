@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-add-recipe',
@@ -19,8 +20,9 @@ export class AddRecipeComponent implements OnInit {
   diets: string[];
   recipeId: any
   isUpdate: boolean
+  token:any
 
-  constructor(private recipeService : RecipeService,  private router: Router, private route: ActivatedRoute) {
+  constructor(private recipeService : RecipeService,  private router: Router, private route: ActivatedRoute, private tokenStorageService:TokenStorageService) {
     this.filePath = '/assets/imageplaceholder.png';
     this.ingridients = new Array();
     this.diets = new Array();
@@ -37,6 +39,7 @@ export class AddRecipeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.token = this.tokenStorageService.getToken();
     const routeParams = this.route.snapshot.paramMap;
     this.recipeId = Number(routeParams.get('recipeId'));
     if(this.recipeId) {

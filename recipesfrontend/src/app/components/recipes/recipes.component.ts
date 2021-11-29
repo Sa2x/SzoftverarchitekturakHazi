@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RecipeService } from 'src/app/services/recipe.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-recipes',
@@ -10,10 +11,12 @@ export class RecipesComponent implements OnInit {
   @Input()
   user: any;
   recipes: any;
+  token: any;
 
-  constructor(private recipeService: RecipeService) {}
+  constructor(private recipeService: RecipeService, private tokenStorageService: TokenStorageService) {}
 
   ngOnInit(): void {
+    this.token = this.tokenStorageService.getToken();
     if(this.user) {
       this.recipeService.getAllByUserId(this.user.id).subscribe(
         data => {

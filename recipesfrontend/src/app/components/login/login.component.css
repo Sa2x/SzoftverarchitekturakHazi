@@ -1,0 +1,32 @@
+.registerHolder {
+    display: flex; 
+    justify-content:center; 
+    align-items:center;
+    margin-top: 50px;
+}
+
+.col-md-3 {
+    background-color: #b1e5f2;
+    margin: 20px;
+    padding: 20px;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 25px;
+}
+
+.registerTitle {
+    text-align: center;
+    font-size: x-large;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+#notMember {
+    font-style: italic;
+    font-weight: lighter;
+}
+
+#btn {
+    background-color: white;
+    color:black;
+}
