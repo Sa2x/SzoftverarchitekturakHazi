@@ -40,4 +40,16 @@ export class AuthService {
   getUserById(id:number):Observable<any> {
     return this.http.get(AUTH_API + id);
   }
+
+  subscribe(id:number):Observable<any> {
+    return this.http.post(AUTH_API + id + '/follow', "");
+  }
+
+  unsubscribe(id:number):Observable<any> {
+    return this.http.post(AUTH_API + id + '/unfollow' ,"");
+  }
+
+  getFollowers(id:number):Observable<any> {
+    return this.http.get(AUTH_API + id + '/followers');
+  }
 }
