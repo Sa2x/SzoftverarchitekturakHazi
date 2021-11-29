@@ -1,10 +1,13 @@
-<div class="col-md-3">
-    <div class="card card-container">
-        <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-        />
+<div class="registerHolder">
+    <div class="col-md-3">
+      <div class="registerTitle">
+        Login
+        <br>
+        to
+        <br>
+        RecipeBook
+        </div>
+        <hr>
         <form
         *ngIf="!isLoggedIn"
         name="form"
@@ -66,10 +69,18 @@
             Login failed: {{ errorMessage }}
             </div>
         </div>
-        </form>
-
         <div class="alert alert-success" *ngIf="isLoggedIn">
         Logged in successfully.
+        </div>
+    </form>
+        <hr>
+        <div>
+            <p id="notMember">Not a member yet?</p>
+        </div>
+        <div class="registerButtonHolder">
+            <a [routerLink]="['/register']"><button class="btn btn-outline-primary btn-block" id="btn">
+                Register
+            </button></a>
         </div>
     </div>
 </div>

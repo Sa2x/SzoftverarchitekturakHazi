@@ -21,3 +21,12 @@
     border-radius: 25px;
     text-align: center;
   }
+
+  .messageHolder {
+    text-align: center;
+    font-weight: bolder;
+    display: flex; 
+    justify-content:center; 
+    align-items:center;
+    margin-top: 50px;
+}

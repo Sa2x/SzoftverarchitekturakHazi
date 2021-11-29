@@ -50,6 +50,15 @@
   </div>
 </div>
   
-  <ng-template #loggedOut>
-    Please login.
-  </ng-template>
+<ng-template #loggedOut >
+  <div class="messageHolder">
+      <div class="col-md-3">
+          Please login to acces this site.
+      <br>
+      <hr>
+      <a [routerLink]="['/login']">
+          <button type="button" class="btn btn-outline-danger btn-block">To Login Page</button>
+      </a>
+      </div>
+  </div>
+</ng-template>

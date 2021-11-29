@@ -1,6 +1,18 @@
-<div class="row">
+<div class="row" *ngIf="token; else loggedOut">
     <div class="userItem" *ngFor="let user of users">
         <a [routerLink]="['/users', user.id]"><h3><p>{{user.userName}}</p></h3></a>
     </div>
 </div>
+<ng-template #loggedOut >
+    <div class="messageHolder">
+        <div class="col-md-3">
+            Please login to acces this site.
+        <br>
+        <hr>
+        <a [routerLink]="['/login']">
+            <button type="button" class="btn btn-outline-danger btn-block">To Login Page</button>
+        </a>
+        </div>
+    </div>
+</ng-template>
 
