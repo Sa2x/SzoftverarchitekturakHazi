@@ -7,7 +7,7 @@ import java.util.*
 
 interface RecipeRepository: CrudRepository<Recipe, Int> {
 
-    @Query("SELECT r from Recipe r left JOIN FETCH r.likes")
+    @Query("SELECT r from Recipe r left JOIN FETCH r.likes left JOIN FETCH r.ingredients left JOIN FETCH r.diets")
     override fun findAll(): MutableSet<Recipe>
 
     @Query("SELECT r from Recipe r left JOIN FETCH r.ingredients left JOIN FETCH r.diets left join fetch r.likes WHERE r.id = (:id)")

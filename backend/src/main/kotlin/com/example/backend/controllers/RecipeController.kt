@@ -11,14 +11,12 @@ import com.example.backend.entities.User
 import com.example.backend.mail.EmailService
 import com.example.backend.repositories.RecipeRepository
 import com.example.backend.repositories.UserRepository
-import com.fasterxml.jackson.databind.util.JSONPObject
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
@@ -47,7 +45,7 @@ class RecipeController(
                 recipe.name,
                 "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                 GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                recipe.likes
+                likes = recipe.likes?.map{ user-> GetUserForGetRecipeDTO(user.id, user.userName, user.email)}
             )
         })
 
