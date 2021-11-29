@@ -14,6 +14,8 @@ export class ProfileComponent implements OnInit {
   token: any;
   userId: any;
   isFollowed: any;
+  followerCount: any;
+  followedCount: any;
 
   constructor(private authService : AuthService, private tokenStorageService : TokenStorageService, private router: Router, private route: ActivatedRoute) { }
 
@@ -24,16 +26,25 @@ export class ProfileComponent implements OnInit {
     this.authService.self().subscribe(
       data => {
         this.myuserId = data.id;
+        this.currentUser = data;
       },
       err => {
         console.log(err);
       }
     );
     if(this.userId) {
+      this.authService.getUserById(this.userId).subscribe(
+        data => {
+          this.currentUser=data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
       this.authService.getFollowers(this.userId).subscribe(
         data => {
+          this.followerCount = data.length;
           if (data.some((u: { id: number; }) => u.id === this.myuserId)) {
-            console.log("User is follwe by you");
             this.isFollowed = true;
           }
           else {
@@ -44,19 +55,35 @@ export class ProfileComponent implements OnInit {
           console.log(err);
         }
       );
-      this.authService.getUserById(this.userId).subscribe(
+      this.authService.getFollowed(this.userId).subscribe(
         data => {
-          this.currentUser=data;
+          this.followedCount = data.length;
         },
         err => {
           console.log(err);
         }
-      );
+      )
     }
     else {
       this.authService.self().subscribe(
         data => {
           this.currentUser = data;
+          this.authService.getFollowers(this.currentUser.id).subscribe(
+            data => {
+              this.followerCount = data.length;
+            },
+            err => {
+              console.log(err);
+            }
+          );
+          this.authService.getFollowed(this.currentUser.id).subscribe(
+            data => {
+              this.followedCount = data.length;
+            },
+            err => {
+              console.log(err);
+            }
+          );
         },
         err => {
           console.log(err);

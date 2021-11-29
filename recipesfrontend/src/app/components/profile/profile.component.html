@@ -2,17 +2,33 @@
   <div class="row">
     <div class="column">
         <div class="userDetails">
-          <h3>
-          <strong>{{ currentUser.userName }}'s</strong> Profile
-        </h3>
-        <p>
-          <strong>Email:</strong>
-          {{ currentUser.email }}
-        </p>
-        <p>
-          <strong>Id:</strong>
-          {{ currentUser.id }}
-        </p>
+          <table>
+            <tr>
+              <td>
+                <h3>
+                  <strong>{{ currentUser.userName }}'s</strong> Profile
+                </h3>
+                <p>
+                  <strong>Email:</strong>
+                  {{ currentUser.email }}
+                </p>
+                <p>
+                  <strong>Followers: </strong>
+                  <span *ngIf="followerCount>0">{{ followerCount }}</span><span *ngIf="followerCount==0">0</span>
+                </p>
+                <p>
+                  <strong>Followed Users: </strong>
+                  <span *ngIf="followerCount>0">{{ followedCount }}</span><span *ngIf="followerCount==0">0</span>
+                </p>
+              </td>
+              <td>
+                <div class="hatImageHolder">
+                  <img class="hatImage" src="assets/cookbook.png">
+                </div>
+              </td>
+            </tr>
+          </table>
+          
       </div>
     </div>
     <div class="column">
