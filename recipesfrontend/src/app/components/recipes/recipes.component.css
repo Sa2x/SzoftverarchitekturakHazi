@@ -67,6 +67,14 @@ img {
     border-radius: 25px;
 }
 
+.likeHolder {
+    flex-grow: 1;
+    min-width: 100px;
+    align-content: flex-start;
+    border-radius: 25px;
+    padding-top: 15px;
+}
+
 .opButton {
     margin: 10px;
 }
