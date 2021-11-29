@@ -107,7 +107,7 @@ class RecipeController(
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
             if (user.id == recipe.user.id) {
-                if(!recipe.likes.isNullOrEmpty()) recipe.likes.forEach { liker -> (liker.likedRecipes as MutableSet<User>).remove(recipe) }
+                if(!recipe.likes.isNullOrEmpty()) recipe.likes.forEach { liker -> (liker.likedRecipes?.toMutableSet())?.remove(recipe) }
                 recipeRepository.delete(recipe)
                 return ResponseEntity.ok().build()
             }
