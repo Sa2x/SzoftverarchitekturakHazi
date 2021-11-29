@@ -57,8 +57,10 @@ export class AddRecipeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log("button pressed");
     if(!this.isUpdate)
     {
+      console.log("calling create");
       this.recipeService.create(this.form.name, this.selectedFile, this.form.description, this.diets, this.ingridients).subscribe(
         data => {
           console.log(data);
@@ -70,6 +72,7 @@ export class AddRecipeComponent implements OnInit {
       );
     }
     else {
+      console.log("calling update");
       this.recipeService.update(this.recipeId, this.form.name, this.selectedFile, this.form.description, this.diets, this.ingridients).subscribe(
         data => {
           console.log(data);

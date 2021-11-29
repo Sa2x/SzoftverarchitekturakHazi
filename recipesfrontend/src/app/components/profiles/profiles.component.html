@@ -1,6 +1,13 @@
 <div class="row">
     <div class="userItem" *ngFor="let user of users">
-        <a [routerLink]="['/users', user.id]"><h3><p>{{user.userName}}</p></h3></a>
+        <div *ngIf="currentUser.id != user.id">
+            <a [routerLink]="['/users', user.id]"><h3><p>{{user.userName}}</p></h3></a>
+        </div>
+        <div *ngIf="currentUser.id == user.id">
+            <a [routerLink]="['/profile']"><h3><p>{{user.userName}}</p></h3></a>
+        </div>
     </div>
 </div>
-
+<ng-template #loggedOut>
+    Please login.
+</ng-template>

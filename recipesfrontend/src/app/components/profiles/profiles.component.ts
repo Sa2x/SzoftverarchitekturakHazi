@@ -8,9 +8,18 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProfilesComponent implements OnInit {
   users:any
+  currentUser:any
   constructor(private authService : AuthService) { }
 
   ngOnInit(): void {
+    this.authService.self().subscribe(
+      data => {
+        this.currentUser = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
     this.authService.getAllUsers().subscribe(
       data => {
         this.users = data;

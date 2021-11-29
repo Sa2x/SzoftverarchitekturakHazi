@@ -6,7 +6,8 @@
     <div class="titleHolder">
       <a [routerLink]="['/recipes', recipe.id]"><span class="title">{{recipe.name}}</span></a>
       <br>
-      <a [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a>
+      <a *ngIf="currentUser.id != recipe.user.id" [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a>
+      <a *ngIf="currentUser.id == recipe.user.id" [routerLink]="['/profile']">{{recipe.user.userName}}</a>
     </div>
     <div class="dietHolder">
       <div class="dietRow">
@@ -31,3 +32,6 @@
     </div>
   </div>
 </div>
+<ng-template #loggedOut>
+  Please login.
+</ng-template>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -10,10 +11,19 @@ export class RecipesComponent implements OnInit {
   @Input()
   user: any;
   recipes: any;
+  currentUser:any
 
-  constructor(private recipeService: RecipeService) {}
+  constructor(private recipeService: RecipeService, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.authService.self().subscribe(
+      data => {
+        this.currentUser = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
     if(this.user) {
       this.recipeService.getAllByUserId(this.user.id).subscribe(
         data => {
