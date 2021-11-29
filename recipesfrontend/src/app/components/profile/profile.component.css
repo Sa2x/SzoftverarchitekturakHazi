@@ -8,6 +8,17 @@
     padding: 10px;
   }
 
+  .hatImage {
+    width:100px;
+    height: 100px;
+    justify-content:center; 
+  }
+
+  .hatImageHolder {
+    padding-left: 75px;
+    margin: 10px;
+  }
+
   .userDetails {
     padding: 10px;
     background-color: #b1e5f2;

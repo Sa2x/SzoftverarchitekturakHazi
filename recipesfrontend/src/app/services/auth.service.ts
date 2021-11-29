@@ -52,4 +52,8 @@ export class AuthService {
   getFollowers(id:number):Observable<any> {
     return this.http.get(AUTH_API + id + '/followers');
   }
+
+  getFollowed(id:number):Observable<any> {
+    return this.http.get(AUTH_API + id + '/followed');
+  }
 }
