@@ -115,6 +115,7 @@ class RecipeController(
         return ResponseEntity("The recipe doesn't exist with the given id", HttpStatus.NOT_FOUND)
     }
 
+    //TODO FIX IMAGE UPDATE
     @PutMapping("/{id}")
     fun updateRecipe(
         @Auth user: User,

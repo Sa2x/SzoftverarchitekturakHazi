@@ -18,7 +18,7 @@
           <td><a [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a></td>
           <td>{{recipe.likes}}</td>
           <td *ngIf="user"><button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
-            <button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button></td>
+            <a [routerLink]="['/recipes/edit', recipe.id]"><button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button></a></td>
         </tr>
     </tbody>
   </table>
