@@ -22,6 +22,53 @@ class UserController(private val userRepository: UserRepository) {
     fun getAllUsers(): ResponseEntity<Any> = ResponseEntity.ok(
         userRepository.findAll().map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
 
+    @Transactional
+    @GetMapping("/{id}")
+    fun getUserById(@PathVariable id: Int): ResponseEntity<Any> {
+        if (userRepository.existsById(id)) {
+            val user = userRepository.findById(id).orElse(null)
+            return ResponseEntity.ok(
+                GetUserDTO(
+                    user.id,
+                    user.userName,
+                    user.email,
+                    likedRecipes = user.likedRecipes?.map { recipe ->
+                        GetReducedRecipeDTO(
+                            recipe.id,
+                            recipe.name,
+                            "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
+                            GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
+                            likes = recipe.likes?.map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
+                    }!!.toSet(),
+                    uploadedRecipes = user.uploadedRecipes?.map { recipe ->
+                        GetReducedRecipeDTO(
+                            recipe.id,
+                            recipe.name,
+                            "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
+                            GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
+                            likes = recipe.likes?.map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
+                    }!!.toSet(),
+                    followedUsers = user.followedUsers?.map { followed ->
+                        GetUserForGetRecipeDTO(
+                            followed.id,
+                            followed.userName,
+                            followed.email
+                        )
+                    }!!.toSet(),
+                    followers = user.followers?.map { follower ->
+                        GetUserForGetRecipeDTO(
+                            follower.id,
+                            follower.userName,
+                            follower.email
+                        )
+                    }!!.toSet(),
+
+                    )
+            )
+        }
+        return ResponseEntity("User not found", HttpStatus.NOT_FOUND)
+    }
+
     @PostMapping("/register")
     fun register(@RequestBody user: RegisterUserDTO): ResponseEntity<Any> {
         if (!userRepository.existsUserByEmail(user.email)) {

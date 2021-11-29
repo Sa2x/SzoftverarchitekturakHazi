@@ -10,9 +10,7 @@ interface UserRepository: CrudRepository<User, Int> {
     fun existsUserByEmail(email:String):Boolean
     fun findByEmail(email:String):User
 
-//    @Query("SELECT u from User u left JOIN FETCH u.likedRecipes")
-//    override fun findAll(): MutableSet<User>
-//
-//    @Query("SELECT u from User u left JOIN FETCH u.likedRecipes WHERE u.id = (:id)")
-//    override fun findById(id: Int): Optional<User>
+    // left JOIN FETCH u.likedRecipes left JOIN FETCH u.uploadedRecipes left JOIN FETCH u.followedUsers left join fetch u.followers
+    @Query("SELECT u from User u  WHERE u.id = (:id)")
+    override fun findById(id: Int): Optional<User>
 }

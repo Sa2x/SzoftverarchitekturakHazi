@@ -21,7 +21,7 @@ data class User (
         inverseJoinColumns = [ JoinColumn(name = "recipe_id") ]
     )
     val likedRecipes:Set<Recipe>? = emptySet(),
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     val uploadedRecipes:List<Recipe>?= emptyList(),
     @ManyToMany
     @JoinTable(
