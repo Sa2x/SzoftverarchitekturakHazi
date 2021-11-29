@@ -32,4 +32,12 @@ export class AuthService {
   self(): Observable<any> {
     return this.http.get(AUTH_API + "me", httpOptions)
   }
+
+  getAllUsers():Observable<any> {
+    return this.http.get(AUTH_API);
+  }
+
+  getUserById(id:number):Observable<any> {
+    return this.http.get(AUTH_API + id);
+  }
 }

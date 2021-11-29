@@ -1,25 +1,27 @@
-<div class="container">
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Image</th>
-        <th scope="col">Name</th>
-        <th scope="col">User</th>
-        <th scope="col">Likes</th>
-        <th scope="col" *ngIf="user">Operations</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let recipe of recipes">
-          <td>{{recipe.id}}</td>
-          <td><img src="{{recipe.imageURL}}"/></td>
-          <td><a [routerLink]="['/recipes', recipe.id]">{{recipe.name}}</a></td>
-          <td><a [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a></td>
-          <td>{{recipe.likes}}</td>
-          <td *ngIf="user"><button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
-            <a [routerLink]="['/recipes/edit', recipe.id]"><button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button></a></td>
-        </tr>
-    </tbody>
-  </table>
+<div class="col-md-10">
+  <div class="row" *ngFor="let recipe of recipes">
+    <div class="imageHolder">
+      <img src="{{recipe.imageURL}}"/>
+    </div>
+    <div class="titleHolder">
+      <a [routerLink]="['/recipes', recipe.id]"><span class="title">{{recipe.name}}</span></a>
+      <br>
+      <a [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a>
+    </div>
+    <div class="dietHolder">
+      <div class="dietRow">
+        <div class="dietContainer" *ngFor="let diet of recipe.diets">
+          <button type="button" class="btn btn-primary btn-sm" disabled>{{diet}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="operationsHolder" *ngIf="user">
+      <div class="opButton">
+        <button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
+      </div>
+      <div class="opButton">
+        <a [routerLink]="['/recipes/edit', recipe.id]"><button type="button" class="btn btn-warning"><i class="bi bi-pencil-fill"></i></button></a>
+      </div>
+    </div>
+  </div>
 </div>

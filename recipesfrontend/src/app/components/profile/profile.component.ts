@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
@@ -11,19 +11,34 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 export class ProfileComponent implements OnInit {
   currentUser: any;
   token: any;
+  userId: any;
 
-  constructor(private authService : AuthService, private tokenStorageService : TokenStorageService, private router: Router) { }
+  constructor(private authService : AuthService, private tokenStorageService : TokenStorageService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const routeParams = this.route.snapshot.paramMap;
+    this.userId = Number(routeParams.get('userId'));
     this.token = this.tokenStorageService.getToken();
-    this.authService.self().subscribe(
-      data => {
-        this.currentUser = data;
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    if(this.userId) {
+      this.authService.getUserById(this.userId).subscribe(
+        data => {
+          this.currentUser=data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+    else {
+      this.authService.self().subscribe(
+        data => {
+          this.currentUser = data;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   goToNewRecipe(): void {

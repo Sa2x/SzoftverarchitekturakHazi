@@ -1,0 +1,20 @@
+.row {
+    padding: 10px;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.userItem {
+    margin: 10px;
+    padding: 10px;
+    background-color: #b1e5f2;
+    height: 150px;
+    width: 150px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+p {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
