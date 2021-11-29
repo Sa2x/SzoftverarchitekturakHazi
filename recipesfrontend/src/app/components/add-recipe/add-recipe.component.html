@@ -58,31 +58,31 @@
         </div>
         <div class="row">
             <div class="dietColumn">
-                <input class="form-check-input" type="checkbox" value="STANDARD" id="standardCheck" (change)="checkCheckBoxvalue($event)">
+                <input class="form-check-input" type="checkbox" value="STANDARD" id="standardCheck" (change)="checkCheckBoxvalue($event)" [checked]="diets.includes('STANDARD')">
                 <label class="form-check-label" for="standardCheck">
                 Standard
                 </label>
             </div>
             <div class="dietColumn">
-                <input class="form-check-input" type="checkbox" value="LACTOSE_FREE" id="lactoseCheck" (change)="checkCheckBoxvalue($event)">
+                <input class="form-check-input" type="checkbox" value="LACTOSE_FREE" id="lactoseCheck" (change)="checkCheckBoxvalue($event)" [checked]="diets.includes('LACTOSE_FREE')">
                 <label class="form-check-label" for="lactoseCheck">
                 Lactose Free
                 </label>
             </div>
             <div class="dietColumn">
-                <input class="form-check-input" type="checkbox" value="GLUTEN_FREE" id="glutenCheck" (change)="checkCheckBoxvalue($event)">
+                <input class="form-check-input" type="checkbox" value="GLUTEN_FREE" id="glutenCheck" (change)="checkCheckBoxvalue($event)" [checked]="diets.includes('GLUTEN_FREE')">
                 <label class="form-check-label" for="glutenCheck">
                 Gluten Free
                 </label>
             </div>
             <div class="dietColumn">
-                <input class="form-check-input" type="checkbox" value="VEGETARIAN" id="vegetCheck" (change)="checkCheckBoxvalue($event)">
+                <input class="form-check-input" type="checkbox" value="VEGETARIAN" id="vegetCheck" (change)="checkCheckBoxvalue($event)" [checked]="diets.includes('VEGETARIAN')">
                 <label class="form-check-label" for="vegetCheck">
                 Vegetarian
                 </label>
             </div>
             <div class="dietColumn">
-                <input class="form-check-input" type="checkbox" value="VEGAN" id="veganCheck" (change)="checkCheckBoxvalue($event)">
+                <input class="form-check-input" type="checkbox" value="VEGAN" id="veganCheck" (change)="checkCheckBoxvalue($event)" [checked]="diets.includes('VEGAN')">
                 <label class="form-check-label" for="veganCheck">
                 Vegan
                 </label>
@@ -109,7 +109,7 @@
             </div>
             <div class="submitColumn">
                 <button class="btn btn-primary">
-                    <h3>Create Recipe</h3>
+                    <h3><p *ngIf="!recipeId">Create Recipe</p><p *ngIf="recipeId">Update Recipe</p></h3>
                 </button>
             </div>
         </div>

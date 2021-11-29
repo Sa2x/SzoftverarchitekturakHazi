@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -17,11 +17,14 @@ export class AddRecipeComponent implements OnInit {
   };
   ingridients: string[];
   diets: string[];
+  recipeId: any
+  isUpdate: boolean
 
-  constructor(private recipeService : RecipeService,  private router: Router) {
+  constructor(private recipeService : RecipeService,  private router: Router, private route: ActivatedRoute) {
     this.filePath = '/assets/imageplaceholder.png';
     this.ingridients = new Array();
     this.diets = new Array();
+    this.isUpdate = false;
    }
 
   onFileChanged(event: any ) {
@@ -34,23 +37,50 @@ export class AddRecipeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const routeParams = this.route.snapshot.paramMap;
+    this.recipeId = Number(routeParams.get('recipeId'));
+    if(this.recipeId) {
+      this.isUpdate = true;
+      this.recipeService.getById(this.recipeId).subscribe(
+        data => {
+          this.ingridients = data.ingredients;
+          this.diets = data.diets;
+          this.form.name = data.name;
+          this.form.description = data.description;
+          this.filePath = data.imageURL;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   onSubmit(): void {
-    console.log(this.form.name);
-    console.log(this.selectedFile);
-    console.log(this.form.description);
-    console.log(this.diets);
-    console.log(this.ingridients);
-    this.recipeService.create(this.form.name, this.selectedFile, this.form.description, this.diets, this.ingridients).subscribe(
-      data => {
-        console.log(data);
-        this.router.navigate(['/recipes']);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    if(!this.isUpdate)
+    {
+      this.recipeService.create(this.form.name, this.selectedFile, this.form.description, this.diets, this.ingridients).subscribe(
+        data => {
+          console.log(data);
+          this.router.navigate(['/recipes']);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+    else {
+      this.recipeService.update(this.recipeId, this.form.name, this.selectedFile, this.form.description, this.diets, this.ingridients).subscribe(
+        data => {
+          console.log(data);
+          this.router.navigate(['/recipes']);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
+    
   }
 
   addIngridient(value : string):void {

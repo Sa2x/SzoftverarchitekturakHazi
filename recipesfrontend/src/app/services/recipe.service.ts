@@ -39,6 +39,27 @@ export class RecipeService {
     return this.http.post(RECIPE_API, formData, {});
   }
 
+  update(
+    id: number,
+    name: string,
+    image: File,
+    description: string,
+    diets: string[],
+    ingridients: string[]
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', image);
+    formData.append('name', name);
+    formData.append('description', description);
+    diets.forEach((diet) => {
+      formData.append('diets', diet);
+    });
+    ingridients.forEach((ingridient) => {
+      formData.append('ingredients', ingridient);
+    });
+    return this.http.put(RECIPE_API + id, formData, {});
+  }
+
   delete(id: number): Observable<any> {
     return this.http.delete(RECIPE_API + id);
   }
