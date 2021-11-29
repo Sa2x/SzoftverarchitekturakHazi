@@ -38,7 +38,14 @@ class UserController(private val userRepository: UserRepository) {
                             recipe.name,
                             "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                             GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                            likes = recipe.likes?.map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
+                            likes = recipe.likes?.map { user ->
+                                GetUserForGetRecipeDTO(
+                                    user.id,
+                                    user.userName,
+                                    user.email
+                                )
+                            }, recipe.diets
+                        )
                     }!!.toSet(),
                     uploadedRecipes = user.uploadedRecipes?.map { recipe ->
                         GetReducedRecipeDTO(
@@ -46,7 +53,14 @@ class UserController(private val userRepository: UserRepository) {
                             recipe.name,
                             "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                             GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                            likes = recipe.likes?.map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
+                            likes = recipe.likes?.map { user ->
+                                GetUserForGetRecipeDTO(
+                                    user.id,
+                                    user.userName,
+                                    user.email
+                                )
+                            }, recipe.diets
+                        )
                     }!!.toSet(),
                     followedUsers = user.followedUsers?.map { followed ->
                         GetUserForGetRecipeDTO(
@@ -119,7 +133,9 @@ class UserController(private val userRepository: UserRepository) {
                     recipe.name,
                     "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                     GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                    likes = recipe.likes?.map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) })
+                    likes = recipe.likes?.map { user -> GetUserForGetRecipeDTO(user.id, user.userName, user.email) },
+                    recipe.diets
+                )
             })
         }
         return ResponseEntity("No user exists with the given id", HttpStatus.NOT_FOUND)

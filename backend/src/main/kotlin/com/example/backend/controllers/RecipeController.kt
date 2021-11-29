@@ -45,7 +45,8 @@ class RecipeController(
                 recipe.name,
                 "http://localhost:8080/api/recipe/" + recipe.id + "/picture",
                 GetUserForGetRecipeDTO(recipe.user.id, recipe.user.userName, recipe.user.email),
-                likes = recipe.likes?.map{ user-> GetUserForGetRecipeDTO(user.id, user.userName, user.email)}
+                likes = recipe.likes?.map{ user-> GetUserForGetRecipeDTO(user.id, user.userName, user.email)},
+                diets = recipe.diets
             )
         })
 

@@ -18,11 +18,11 @@ data class Recipe(
     val description: String,
     @ElementCollection
     @CollectionTable(name="ingredients")
-    @Fetch(FetchMode.SUBSELECT)
+    @Fetch(FetchMode.JOIN)
     val ingredients: Set<String>,
     @ElementCollection
     @CollectionTable(name="diets")
-    @Fetch(FetchMode.SUBSELECT)
+    @Fetch(FetchMode.JOIN)
     val diets: Set<Diet>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
