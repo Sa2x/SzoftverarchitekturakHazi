@@ -10,7 +10,9 @@
                 <div class="row">
                     <div class="column">
                         <h2><strong>{{recipe.name}}</strong></h2>
-                        <h4><a [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a>'s recipe</h4>
+                        <h4><a *ngIf="currentUser && currentUser.id==recipe.user.id" [routerLink]="['/profile']">{{recipe.user.userName}}</a>
+                            <a *ngIf="currentUser && currentUser.id!=recipe.user.id" [routerLink]="['/users', recipe.user.id]">{{recipe.user.userName}}</a>
+                            's recipe</h4>
                     </div>
                     <div class="likeColumn">
                         <div class="likeHolder">

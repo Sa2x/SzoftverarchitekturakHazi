@@ -1,6 +1,7 @@
 <div id="app">
   <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">RecipeBook</a>
+    <a *ngIf="!isLoggedIn" href="/login" class="navbar-brand">RecipeBook</a>
+    <a *ngIf="isLoggedIn" href="/profile" class="navbar-brand">RecipeBook</a>
     <ul class="navbar-nav mr-auto" *ngIf="isLoggedIn">
       <li class="nav-item">
         <a href="/recipes" class="nav-link" routerLink="recipes">Recipes</a>

@@ -6,7 +6,7 @@ align-content: flex-start
 .column {
 padding: 10px;
 flex-grow: 5;
-align-content: flex-start
+align-content: flex-start;
 }
 
 .imageColumn {
@@ -36,12 +36,14 @@ img {
     height: 100%;
     align-content: center;
     padding: 10px;
+    box-shadow: 10px 10px 5px grey;
 }
   .userHolder {
     background-color: #b1e5f2;
     border-radius: 25px;
     height: 100%;
     padding: 20px;
+    box-shadow: 10px 10px 5px grey;
 }
 
 .likeHolder {
@@ -64,6 +66,8 @@ img {
     border-radius: 25px;
     height: 100%;
     padding: 20px;
+    margin-top: 10px;
+    box-shadow: 10px 10px 5px grey;
 }
 
 .messageHolder {

@@ -21,7 +21,7 @@
       </svg>
       <strong><p class="likeCounter">{{recipe.likes.length}}</p></strong>
     </div>
-    <div class="operationsHolder" *ngIf="user">
+    <div class="operationsHolder" *ngIf="user && user.id == currentUser.id">
       <div class="opButton">
         <button type="button" class="btn btn-danger" (click)="delRecipe(recipe.id)"><i class="bi bi-trash-fill"></i></button>
       </div>
