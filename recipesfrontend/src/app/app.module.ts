@@ -13,6 +13,7 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { AddRecipeComponent } from './components/add-recipe/add-recipe.component';
 import { ViewRecipeComponent } from './components/view-recipe/view-recipe.component';
+import { ProfilesComponent } from './components/profiles/profiles.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ViewRecipeComponent } from './components/view-recipe/view-recipe.compon
     ProfileComponent,
     RecipesComponent,
     AddRecipeComponent,
-    ViewRecipeComponent
+    ViewRecipeComponent,
+    ProfilesComponent
   ],
   imports: [
     BrowserModule,

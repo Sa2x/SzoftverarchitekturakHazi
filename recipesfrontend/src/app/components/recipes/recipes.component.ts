@@ -17,6 +17,7 @@ export class RecipesComponent implements OnInit {
     if(this.user) {
       this.recipeService.getAllByUserId(this.user.id).subscribe(
         data => {
+          console.log(data);
           this.recipes = data;
         },
         err => {
