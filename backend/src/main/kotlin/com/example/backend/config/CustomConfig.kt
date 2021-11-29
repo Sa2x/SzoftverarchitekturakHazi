@@ -3,6 +3,7 @@ package com.example.backend.config
 import com.example.backend.auth.AuthTokenWebResolver
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
@@ -11,9 +12,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 class CustomConfig : WebMvcConfigurationSupport() {
 
     @Bean
-    fun authWebArgumentResolverFactory() : HandlerMethodArgumentResolver {
+    fun authWebArgumentResolverFactory(): HandlerMethodArgumentResolver {
         return AuthTokenWebResolver()
     }
+
+    @Bean
+    fun passwordEncoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
 
     // Addding the AuthWebResolver to the default argument resolvers
     override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {

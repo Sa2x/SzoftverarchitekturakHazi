@@ -101,11 +101,13 @@ class RecipeController(
         return ResponseEntity.notFound().build()
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     fun deleteRecipe(@Auth user: User, @PathVariable id: Int): ResponseEntity<Any> {
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
             if (user.id == recipe.user.id) {
+                if(!recipe.likes.isNullOrEmpty()) recipe.likes.forEach { liker -> (liker.likedRecipes as MutableSet<User>).remove(recipe) }
                 recipeRepository.delete(recipe)
                 return ResponseEntity.ok().build()
             }

@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/api/user")
-class UserController(private val userRepository: UserRepository) {
+class UserController(private val userRepository: UserRepository, private val passwordEncoder: BCryptPasswordEncoder) {
 
 
     @GetMapping
@@ -86,7 +87,7 @@ class UserController(private val userRepository: UserRepository) {
     @PostMapping("/register")
     fun register(@RequestBody user: RegisterUserDTO): ResponseEntity<Any> {
         if (!userRepository.existsUserByEmail(user.email)) {
-            val savedUser: User = userRepository.save(User(0, user.userName, user.email, user.password))
+            val savedUser: User = userRepository.save(User(0, user.userName, user.email, passwordEncoder.encode(user.password)))
             return ResponseEntity.ok(savedUser.id)
         }
         return ResponseEntity("User with the given email already exists", HttpStatus.BAD_REQUEST)
@@ -96,7 +97,7 @@ class UserController(private val userRepository: UserRepository) {
     fun login(@RequestBody user: LoginUserDto, response: HttpServletResponse): ResponseEntity<Any> {
         return if (userRepository.existsUserByEmail(user.email)) {
             val foundUser = userRepository.findByEmail(user.email)
-            if (foundUser.password == user.password) {
+            if (passwordEncoder.matches(user.password, foundUser.password)) {
                 val claims: Map<String, Any> = hashMapOf(
                     "user_id" to foundUser.id,
                     "user_name" to foundUser.userName,
