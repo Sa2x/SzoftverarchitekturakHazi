@@ -119,7 +119,7 @@ class RecipeController(
     fun updateRecipe(
         @Auth user: User,
         @PathVariable id: Int,
-        @RequestBody updatedRecipe: CreateRecipeDTO,
+        @ModelAttribute updatedRecipe: CreateRecipeDTO
     ): ResponseEntity<Any> {
         if (recipeRepository.existsById(id)) {
             val recipe: Recipe = recipeRepository.findById(id).orElse(null)
@@ -129,7 +129,8 @@ class RecipeController(
                         name = updatedRecipe.name,
                         description = updatedRecipe.description,
                         diets = updatedRecipe.diets,
-                        ingredients = updatedRecipe.ingredients
+                        ingredients = updatedRecipe.ingredients,
+                        recipePicture = updatedRecipe.file.bytes,
                     )
                 )
                 return ResponseEntity.ok().build()
