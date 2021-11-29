@@ -10,16 +10,18 @@
 
   .userDetails {
     padding: 10px;
-    background-color: #bfd2bf;
+    background-color: #b1e5f2;
     height: 100%;
     border-radius: 25px;
+    box-shadow: 10px 10px 5px grey;
   }
   .newRecipe {
     padding: 10px;
-    background-color: #bfd2bf;
+    background-color: #b1e5f2;
     height: 100%;
     border-radius: 25px;
     text-align: center;
+    box-shadow: 10px 10px 5px grey;
   }
 
   .messageHolder {

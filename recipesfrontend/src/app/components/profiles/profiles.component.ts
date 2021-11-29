@@ -10,9 +10,18 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 export class ProfilesComponent implements OnInit {
   users:any
   token:any
+  currentUser:any
   constructor(private authService : AuthService, private tokenStorageService:TokenStorageService) { }
 
   ngOnInit(): void {
+    this.authService.self().subscribe(
+      data => {
+        this.currentUser = data;
+      },
+      err => {
+        console.log(err);
+      }
+    );
     this.token = this.tokenStorageService.getToken();
     this.authService.getAllUsers().subscribe(
       data => {
